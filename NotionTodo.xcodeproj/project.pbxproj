@@ -11,6 +11,8 @@
 		DFAF094C2C7D6DE4008DD06A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAF094B2C7D6DE4008DD06A /* ContentView.swift */; };
 		DFAF094E2C7D6DE6008DD06A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFAF094D2C7D6DE6008DD06A /* Assets.xcassets */; };
 		DFAF09512C7D6DE6008DD06A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFAF09502C7D6DE6008DD06A /* Preview Assets.xcassets */; };
+		DFAF095B2C7D723B008DD06A /* ClassPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAF095A2C7D723B008DD06A /* ClassPickerView.swift */; };
+		DFAF095E2C7D7D5D008DD06A /* NotionSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DFAF095D2C7D7D5D008DD06A /* NotionSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,7 @@
 		DFAF094B2C7D6DE4008DD06A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DFAF094D2C7D6DE6008DD06A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DFAF09502C7D6DE6008DD06A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DFAF095A2C7D723B008DD06A /* ClassPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassPickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DFAF095E2C7D7D5D008DD06A /* NotionSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +57,7 @@
 			children = (
 				DFAF09492C7D6DE4008DD06A /* NotionTodoApp.swift */,
 				DFAF094B2C7D6DE4008DD06A /* ContentView.swift */,
+				DFAF095A2C7D723B008DD06A /* ClassPickerView.swift */,
 				DFAF094D2C7D6DE6008DD06A /* Assets.xcassets */,
 				DFAF094F2C7D6DE6008DD06A /* Preview Content */,
 			);
@@ -83,6 +88,9 @@
 			dependencies = (
 			);
 			name = NotionTodo;
+			packageProductDependencies = (
+				DFAF095D2C7D7D5D008DD06A /* NotionSwift */,
+			);
 			productName = NotionTodo;
 			productReference = DFAF09462C7D6DE4008DD06A /* NotionTodo.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +119,9 @@
 				Base,
 			);
 			mainGroup = DFAF093D2C7D6DE4008DD06A;
+			packageReferences = (
+				DFAF095C2C7D7D5D008DD06A /* XCRemoteSwiftPackageReference "NotionSwift" */,
+			);
 			productRefGroup = DFAF09472C7D6DE4008DD06A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -139,6 +150,7 @@
 			files = (
 				DFAF094C2C7D6DE4008DD06A /* ContentView.swift in Sources */,
 				DFAF094A2C7D6DE4008DD06A /* NotionTodoApp.swift in Sources */,
+				DFAF095B2C7D723B008DD06A /* ClassPickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,6 +356,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DFAF095C2C7D7D5D008DD06A /* XCRemoteSwiftPackageReference "NotionSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/chojnac/NotionSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DFAF095D2C7D7D5D008DD06A /* NotionSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DFAF095C2C7D7D5D008DD06A /* XCRemoteSwiftPackageReference "NotionSwift" */;
+			productName = NotionSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DFAF093E2C7D6DE4008DD06A /* Project object */;
 }
