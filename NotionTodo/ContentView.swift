@@ -65,17 +65,18 @@ struct ContentView: View {
                                     Text(selectedClass.isEmpty ? "Select Class" : selectedClass)
                                         .lineLimit(1)
                                         .truncationMode(.tail)
+                                        .padding(.vertical, 8)
+                                        .padding(.horizontal, 9)
+                                    Spacer()
                                 }
-                                .padding(.vertical, 8)
-                                .padding(.trailing, 18)
-                                // todo: FIX SIZE WITH REGARDS TO TEXT BRUH
-                                .frame(maxWidth: 130) // todo: hack
+                                .frame(maxWidth: 128) // todo: hack
                                 .background(Color(.systemGray6))
                                 .cornerRadius(8)
                             }
                             .foregroundColor(.primary)
                         }
-                        .padding(.horizontal)                    }
+                        .padding(.horizontal)
+                    }
                 }
                 .frame(height: 75, alignment: .top)
                 .padding(.bottom)
