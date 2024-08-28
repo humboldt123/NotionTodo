@@ -7,11 +7,14 @@ let todoDatabase = Database.Identifier("46193d25615b4e31b54380b9d6c0a1bf")
 let categoryMap: [String:String] = ["Personal":"brown", "School":"pink","Work":"orange"]
 
 struct ContentView: View {
-    @State private var todoName: String = ""
+    @State private var taskName: String = ""
     @State private var dueDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: Date()) ?? Date()
     @State private var category: Category = .personal
     @State private var selectedClass: String = ""
     @State private var showingClassPicker = false
+    
+    @State private var showToast = false
+    @State private var toastItem: String? = nil
     
     @State private var courseMap: [String: URL] = [:]
     
@@ -20,19 +23,56 @@ struct ContentView: View {
         case school = "School"
     }
     
+    var isAddButtonDisabled: Bool {
+        return taskName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
     var body: some View {
         VStack(spacing: 20) {
             Text("Todo")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .padding(.top)
+                .padding(.top, 30)
             
-            TextField("Todo Item Name", text: $todoName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            TextField("Task Name", text: $taskName)
+                .textFieldStyle(PlainTextFieldStyle())
+                .padding()
+                .frame(height: 44)
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
                 .padding(.horizontal)
+                .padding(.vertical, 20)
             
-            DatePicker("Due Date", selection: $dueDate, displayedComponents: .date)
-                .padding(.horizontal)
+            VStack {
+                DatePicker("Deadline", selection: $dueDate, displayedComponents: .date)
+                    .padding(.horizontal)
+                
+                if category == .school {
+                    HStack {
+                        Text("Class")
+                        Spacer()
+                        Button(action: {
+                            showingClassPicker = true
+                        }) {
+                            HStack {
+                                Spacer()
+                                Text(selectedClass.isEmpty ? "Select Class" : selectedClass)
+                                    .lineLimit(1)
+                                    .truncationMode(.tail)
+                            }
+                            .padding(.vertical, 8)
+                            .padding(.trailing, 18)
+                            .frame(maxWidth: 130) // todo: hack
+                            .background(Color(.systemGray6))
+                            .cornerRadius(8)
+                        }
+                        .foregroundColor(.primary)
+                    }
+                    .padding(.horizontal)
+                }
+            }
+            .frame(height: 75, alignment: .top)
+            .padding(.bottom)
             
             Picker("Category", selection: $category) {
                 ForEach(Category.allCases, id: \.self) { category in
@@ -42,21 +82,9 @@ struct ContentView: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding(.horizontal)
             
-            if category == .school {
-                Button(action: {
-                    showingClassPicker = true
-                }) {
-                    Text(selectedClass.isEmpty ? "Select Class" : selectedClass)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }
-            }
-            
             Button(action: {
                 pushTaskToNotion(
-                    name: todoName,
+                    name: taskName,
                     dueDate: dueDate,
                     category: category,
                     associatedClass: category == .school ? selectedClass : nil
@@ -64,10 +92,20 @@ struct ContentView: View {
             }) {
                 Text("Add Todo")
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                    .frame(width: 250)
+                    .background(Color(UIColor { traitCollection in
+                        traitCollection.userInterfaceStyle == .dark ?
+                    
+                        (isAddButtonDisabled ? .systemGray3 : .white)
+                        : (isAddButtonDisabled ? .systemGray : .black)
+                    }))
+                    .foregroundColor(Color(UIColor { traitCollection in
+                        traitCollection.userInterfaceStyle == .dark ? .black : .white
+                    }))
+                    .cornerRadius(5)
+                    .disabled(isAddButtonDisabled)
             }
+            .padding(.vertical, 40)
             
             Spacer()
         }
@@ -77,8 +115,20 @@ struct ContentView: View {
         }
         .task {
              await fetchCourses()
-         }
+        }
+        
+        
+        if showToast {
+              VStack {
+                  Spacer()
+                  ToastView(item: toastItem)
+              }
+              .transition(.move(edge: .bottom))
+              .animation(.easeInOut, value: showToast)
+          }
     }
+    
+    // p-body
     
     func fetchCourses() async {
         do {
@@ -126,14 +176,29 @@ struct ContentView: View {
         )
         
         notion.pageCreate(request: request) { result in
-            switch result {
-            case .success(let response):
-                print("Item added successfully.") // \(response)")
-            case .failure(let error):
-                print("Error adding item.")// \(error)")
-            }
-        }
+             switch result {
+             case .success(_):
+                 DispatchQueue.main.async {
+                     taskName = ""
+                     self.toastItem = name
+                     self.showToast = true
+                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                         self.showToast = false
+                     }
+                 }
+             case .failure(_):
+                 DispatchQueue.main.async {
+                     self.toastItem = nil
+                     self.showToast = true
+                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                         self.showToast = false
+                     }
+                 }
+             }
+         }
     }
+    
+    
     
     
 }

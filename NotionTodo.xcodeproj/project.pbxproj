@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DF4961412C7EBD1F00CF16FB /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4961402C7EBD1F00CF16FB /* ToastView.swift */; };
 		DFAF094A2C7D6DE4008DD06A /* NotionTodoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAF09492C7D6DE4008DD06A /* NotionTodoApp.swift */; };
 		DFAF094C2C7D6DE4008DD06A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAF094B2C7D6DE4008DD06A /* ContentView.swift */; };
 		DFAF094E2C7D6DE6008DD06A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DFAF094D2C7D6DE6008DD06A /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DF4961402C7EBD1F00CF16FB /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		DFAF09462C7D6DE4008DD06A /* NotionTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotionTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFAF09492C7D6DE4008DD06A /* NotionTodoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotionTodoApp.swift; sourceTree = "<group>"; };
 		DFAF094B2C7D6DE4008DD06A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 				DFAF09492C7D6DE4008DD06A /* NotionTodoApp.swift */,
 				DFAF094B2C7D6DE4008DD06A /* ContentView.swift */,
 				DFAF095A2C7D723B008DD06A /* ClassPickerView.swift */,
+				DF4961402C7EBD1F00CF16FB /* ToastView.swift */,
 				DFAF094D2C7D6DE6008DD06A /* Assets.xcassets */,
 				DFAF094F2C7D6DE6008DD06A /* Preview Content */,
 			);
@@ -148,6 +151,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF4961412C7EBD1F00CF16FB /* ToastView.swift in Sources */,
 				DFAF094C2C7D6DE4008DD06A /* ContentView.swift in Sources */,
 				DFAF094A2C7D6DE4008DD06A /* NotionTodoApp.swift in Sources */,
 				DFAF095B2C7D723B008DD06A /* ClassPickerView.swift in Sources */,
@@ -287,11 +291,13 @@
 				DEVELOPMENT_TEAM = FRXVVTS5RH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Task;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,11 +322,13 @@
 				DEVELOPMENT_TEAM = FRXVVTS5RH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Task;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
