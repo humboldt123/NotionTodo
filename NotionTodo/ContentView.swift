@@ -1,9 +1,10 @@
 import SwiftUI
 import NotionSwift
+import Foundation
 
-let notion = NotionClient(accessKeyProvider: StringAccessKeyProvider(accessKey:ProcessInfo.processInfo.environment["access_key"]!))
-let coursesDatabase = Database.Identifier("319ee0842bbb46da850973eb087f13fc")
-let todoDatabase = Database.Identifier("46193d25615b4e31b54380b9d6c0a1bf")
+let notion = NotionClient(accessKeyProvider: StringAccessKeyProvider(accessKey:"SECRET"))
+let coursesDatabase = Database.Identifier("DOESNT_MATTER")
+let todoDatabase = Database.Identifier("IDK")
 let categoryMap: [String:String] = ["Personal":"brown", "School":"pink","Work":"orange"]
 
 struct ContentView: View {
@@ -29,6 +30,10 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
+            Color(UIColor { traitCollection in
+                traitCollection.userInterfaceStyle == .dark ?
+                UIColor(Color.darkModeBackground) : UIColor(Color.lightModeBackground)
+            }).ignoresSafeArea()
             if showToast {
                   VStack {
                       ToastView(item: toastItem)
@@ -71,6 +76,7 @@ struct ContentView: View {
                                 }
                                 .padding(.vertical, 8)
                                 .padding(.trailing, 18)
+                                // todo: FIX SIZE WITH REGARDS TO TEXT BRUH
                                 .frame(maxWidth: 130) // todo: hack
                                 .background(Color(.systemGray6))
                                 .cornerRadius(8)
@@ -98,14 +104,14 @@ struct ContentView: View {
                         associatedClass: category == .school ? selectedClass : nil
                     )
                 }) {
-                    Text("Add Todo")
+                    Text("Push Task")
                         .padding()
                         .frame(width: 250)
                         .background(Color(UIColor { traitCollection in
                             traitCollection.userInterfaceStyle == .dark ?
                         
-                            (isAddButtonDisabled ? .systemGray3 : .white)
-                            : (isAddButtonDisabled ? .systemGray : .black)
+                            (isAddButtonDisabled ? .systemGray5 : .white)
+                            : (isAddButtonDisabled ? .systemGray3 : .black)
                         }))
                         .foregroundColor(Color(UIColor { traitCollection in
                             traitCollection.userInterfaceStyle == .dark ? .black : .white
@@ -138,7 +144,6 @@ struct ContentView: View {
     }
     
     func pushTaskToNotion(name: String, dueDate: Date, category: Category, associatedClass: String?) {
-        let dateString = dueDate.ISO8601Format
         let request = PageCreateRequest(
             parent: .database(todoDatabase),
             properties: [
