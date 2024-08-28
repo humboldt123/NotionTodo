@@ -28,104 +28,103 @@ struct ContentView: View {
     }
     
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Todo")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding(.top, 30)
-            
-            TextField("Task Name", text: $taskName)
-                .textFieldStyle(PlainTextFieldStyle())
-                .padding()
-                .frame(height: 44)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-                .padding(.horizontal)
-                .padding(.vertical, 20)
-            
-            VStack {
-                DatePicker("Deadline", selection: $dueDate, displayedComponents: .date)
-                    .padding(.horizontal)
-                
-                if category == .school {
-                    HStack {
-                        Text("Class")
-                        Spacer()
-                        Button(action: {
-                            showingClassPicker = true
-                        }) {
-                            HStack {
-                                Spacer()
-                                Text(selectedClass.isEmpty ? "Select Class" : selectedClass)
-                                    .lineLimit(1)
-                                    .truncationMode(.tail)
-                            }
-                            .padding(.vertical, 8)
-                            .padding(.trailing, 18)
-                            .frame(maxWidth: 130) // todo: hack
-                            .background(Color(.systemGray6))
-                            .cornerRadius(8)
-                        }
-                        .foregroundColor(.primary)
-                    }
-                    .padding(.horizontal)
-                }
-            }
-            .frame(height: 75, alignment: .top)
-            .padding(.bottom)
-            
-            Picker("Category", selection: $category) {
-                ForEach(Category.allCases, id: \.self) { category in
-                    Text(category.rawValue).tag(category)
-                }
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding(.horizontal)
-            
-            Button(action: {
-                pushTaskToNotion(
-                    name: taskName,
-                    dueDate: dueDate,
-                    category: category,
-                    associatedClass: category == .school ? selectedClass : nil
-                )
-            }) {
-                Text("Add Todo")
-                    .padding()
-                    .frame(width: 250)
-                    .background(Color(UIColor { traitCollection in
-                        traitCollection.userInterfaceStyle == .dark ?
-                    
-                        (isAddButtonDisabled ? .systemGray3 : .white)
-                        : (isAddButtonDisabled ? .systemGray : .black)
-                    }))
-                    .foregroundColor(Color(UIColor { traitCollection in
-                        traitCollection.userInterfaceStyle == .dark ? .black : .white
-                    }))
-                    .cornerRadius(5)
-                    .disabled(isAddButtonDisabled)
-            }
-            .padding(.vertical, 40)
-            
-            Spacer()
-        }
-        .padding()
-        .sheet(isPresented: $showingClassPicker) {
-            ClassPickerView(selectedClass: $selectedClass, classes: Array(courseMap.keys))
-        }
-        .task {
-             await fetchCourses()
-        }
-        
-        
-        if showToast {
-              VStack {
-                  Spacer()
-                  ToastView(item: toastItem)
+        ZStack {
+            if showToast {
+                  VStack {
+                      ToastView(item: toastItem)
+                      Spacer()
+                  }
+                  .transition(.move(edge: .top))
+                  .animation(.bouncy(duration: 0.2), value: showToast)
               }
-              .transition(.move(edge: .bottom))
-              .animation(.easeInOut, value: showToast)
-          }
+            VStack(spacing: 20) {
+                Text("Todo")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding(.top, 40)
+                
+                TextField("Task Name", text: $taskName)
+                    .textFieldStyle(PlainTextFieldStyle())
+                    .padding()
+                    .frame(height: 44)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+                    .padding(.vertical, 20)
+                
+                VStack {
+                    DatePicker("Deadline", selection: $dueDate, displayedComponents: .date)
+                        .padding(.horizontal)
+                    
+                    if category == .school {
+                        HStack {
+                            Text("Class")
+                            Spacer()
+                            Button(action: {
+                                showingClassPicker = true
+                            }) {
+                                HStack {
+                                    Spacer()
+                                    Text(selectedClass.isEmpty ? "Select Class" : selectedClass)
+                                        .lineLimit(1)
+                                        .truncationMode(.tail)
+                                }
+                                .padding(.vertical, 8)
+                                .padding(.trailing, 18)
+                                .frame(maxWidth: 130) // todo: hack
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                            }
+                            .foregroundColor(.primary)
+                        }
+                        .padding(.horizontal)                    }
+                }
+                .frame(height: 75, alignment: .top)
+                .padding(.bottom)
+                
+                Picker("Category", selection: $category) {
+                    ForEach(Category.allCases, id: \.self) { category in
+                        Text(category.rawValue).tag(category)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal)
+                
+                Button(action: {
+                    pushTaskToNotion(
+                        name: taskName,
+                        dueDate: dueDate,
+                        category: category,
+                        associatedClass: category == .school ? selectedClass : nil
+                    )
+                }) {
+                    Text("Add Todo")
+                        .padding()
+                        .frame(width: 250)
+                        .background(Color(UIColor { traitCollection in
+                            traitCollection.userInterfaceStyle == .dark ?
+                        
+                            (isAddButtonDisabled ? .systemGray3 : .white)
+                            : (isAddButtonDisabled ? .systemGray : .black)
+                        }))
+                        .foregroundColor(Color(UIColor { traitCollection in
+                            traitCollection.userInterfaceStyle == .dark ? .black : .white
+                        }))
+                        .cornerRadius(5)
+                        .disabled(isAddButtonDisabled)
+                }
+                .padding(.vertical, 40)
+                
+                Spacer()
+            }
+            .padding()
+            .sheet(isPresented: $showingClassPicker) {
+                ClassPickerView(selectedClass: $selectedClass, classes: Array(courseMap.keys))
+            }
+            .task {
+                 await fetchCourses()
+            }
+        }
     }
     
     // p-body
@@ -177,30 +176,52 @@ struct ContentView: View {
         
         notion.pageCreate(request: request) { result in
              switch result {
-             case .success(_):
+             case .success(let page):
                  DispatchQueue.main.async {
+                     self.setIconForPage(page: page, icon: "🤔")
                      taskName = ""
                      self.toastItem = name
-                     self.showToast = true
-                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                         self.showToast = false
+                     withAnimation {
+                         self.showToast = true
+                     }
+                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+                         withAnimation {
+                             self.showToast = false
+                         }
                      }
                  }
              case .failure(_):
                  DispatchQueue.main.async {
                      self.toastItem = nil
-                     self.showToast = true
-                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                         self.showToast = false
+                     withAnimation {
+                         self.showToast = true
+                     }
+                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+                         withAnimation {
+                             self.showToast = false
+                         }
                      }
                  }
              }
          }
     }
     
-    
-    
-    
+    // 🤔
+    func setIconForPage(page: Page, icon: String) {
+        let updateRequest = PageProperiesUpdateRequest(
+            //icon: .emoji(icon)
+            icon: .external(url: "https://www.notion.so/icons/paste_gray.svg")
+        )
+        
+        notion.pageUpdateProperties(pageId: page.id, request: updateRequest) { result in
+            switch result {
+            case .success(_):
+                print("Icon set successfully")
+            case .failure(let error):
+                print("Failed to set icon: \(error)")
+            }
+        }
+    }
 }
 
 
