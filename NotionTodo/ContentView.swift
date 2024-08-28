@@ -2,9 +2,9 @@ import SwiftUI
 import NotionSwift
 import Foundation
 
-let notion = NotionClient(accessKeyProvider: StringAccessKeyProvider(accessKey:"SECRET"))
-let coursesDatabase = Database.Identifier("DOESNT_MATTER")
-let todoDatabase = Database.Identifier("IDK")
+let notion = NotionClient(accessKeyProvider: StringAccessKeyProvider(accessKey:Bundle.main.object(forInfoDictionaryKey: "NotionSecret") as! String))
+let coursesDatabase = Database.Identifier(Bundle.main.object(forInfoDictionaryKey: "CoursesDatabase") as! String)
+let todoDatabase = Database.Identifier(Bundle.main.object(forInfoDictionaryKey: "TodoDatabase") as! String)
 let categoryMap: [String:String] = ["Personal":"brown", "School":"pink","Work":"orange"]
 
 struct ContentView: View {
@@ -34,14 +34,6 @@ struct ContentView: View {
                 traitCollection.userInterfaceStyle == .dark ?
                 UIColor(Color.darkModeBackground) : UIColor(Color.lightModeBackground)
             }).ignoresSafeArea()
-            if showToast {
-                  VStack {
-                      ToastView(item: toastItem)
-                      Spacer()
-                  }
-                  .transition(.move(edge: .top))
-                  .animation(.bouncy(duration: 0.2), value: showToast)
-              }
             VStack(spacing: 20) {
                 Text("Todo")
                     .font(.largeTitle)
@@ -129,6 +121,15 @@ struct ContentView: View {
             }
             .task {
                  await fetchCourses()
+            }
+            if showToast {
+                  VStack {
+                      Spacer().frame(height: 60)
+                      ToastView(item: toastItem)
+                      Spacer()
+                  }
+                  .transition(.move(edge: .top))
+                  .animation(.bouncy(duration: 0.2), value: showToast)
             }
         }
     }
@@ -220,10 +221,10 @@ struct ContentView: View {
         
         notion.pageUpdateProperties(pageId: page.id, request: updateRequest) { result in
             switch result {
-            case .success(_):
-                print("Icon set successfully")
-            case .failure(let error):
-                print("Failed to set icon: \(error)")
+                case .failure(let error):
+                    print("Failed to set icon: \(error)")
+                default:
+                    break
             }
         }
     }

@@ -8,4 +8,3 @@
 NOTION_SECRET = secret_abc123
 COURSES_DB = c0ur35db1dgo03sh3rex7y8z9a1b2c3x
 TODO_DB = tododb1dgo03sh3re3y8z9a1b2c3xjkb
-CATEGORY_MAP_JSON={"Personal":"brown","School":"pink","Work":"orange"}
