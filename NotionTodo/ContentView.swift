@@ -1,7 +1,7 @@
 import SwiftUI
 import NotionSwift
 
-let notion = NotionClient(accessKeyProvider: StringAccessKeyProvider(accessKey:"secret_bQSALZnIv8vymmCBwjecAAJOx9JckyBgzQlRmCKwFEd"))
+let notion = NotionClient(accessKeyProvider: StringAccessKeyProvider(accessKey:ProcessInfo.processInfo.environment["access_key"]!))
 let coursesDatabase = Database.Identifier("319ee0842bbb46da850973eb087f13fc")
 let todoDatabase = Database.Identifier("46193d25615b4e31b54380b9d6c0a1bf")
 let categoryMap: [String:String] = ["Personal":"brown", "School":"pink","Work":"orange"]
