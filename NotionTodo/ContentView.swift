@@ -21,6 +21,7 @@ struct ContentView: View {
     
     enum Category: String, CaseIterable {
         case personal = "Personal"
+        case work = "Work"
         case school = "School"
     }
     
@@ -185,7 +186,8 @@ struct ContentView: View {
              switch result {
              case .success(let page):
                  DispatchQueue.main.async {
-                     self.setIconForPage(page: page, icon: "🤔")
+                     let (icon, color) = getIconForTask(name: name)
+                     self.setIconForPage(page: page, icon: icon, color: color)
                      taskName = ""
                      self.toastItem = name
                      withAnimation {
@@ -214,20 +216,44 @@ struct ContentView: View {
     }
     
     // 🤔
-    func setIconForPage(page: Page, icon: String) {
+    func setIconForPage(page: Page, icon: String, color: String = "gray") {
         let updateRequest = PageProperiesUpdateRequest(
-            //icon: .emoji(icon)
-            icon: .external(url: "https://www.notion.so/icons/paste_gray.svg")
+            // icon: .emoji(icon)
+            icon: .external(url: "https://www.notion.so/icons/\(icon)_\(color).svg")
         )
         
         notion.pageUpdateProperties(pageId: page.id, request: updateRequest) { result in
             switch result {
-                case .failure(let error):
-                    print("Failed to set icon: \(error)")
-                default:
-                    break
+            case .failure(let error):
+                print("Failed to set icon: \(error)")
+            default:
+                break
             }
         }
+    }
+    func getIconForTask(name: String) -> (icon: String, color: String) {
+        let lowercased = name.lowercased()
+        
+        if lowercased.contains("reading") { return ("book-closed", "gray") }
+        if lowercased.contains("exam") || lowercased.contains("test") || lowercased.contains("quiz") {
+            return ("gradebook", "red")
+        }
+        if lowercased.contains("assessment") || lowercased.contains("coding") || lowercased.contains("code") {
+            return ("code", "gray")
+        }
+        if lowercased.contains("webwork") { return ("mathematics", "gray") }
+        if lowercased.contains("watch") { return ("movie-camera", "gray") }
+        if lowercased.contains("clipboard") { return ("paste", "gray") }
+        if lowercased.contains("mail") { return ("postcard", "gray") }
+        if lowercased.contains("vote") { return ("donkey", "blue") }
+        if lowercased.contains("video") { return ("video-camera", "gray") }
+        if lowercased.contains("haircut") { return ("cut", "gray") }
+        if lowercased.contains("flight") { return ("boarding-pass", "gray") }
+        if lowercased.contains("rent") { return ("traffic-cone", "red") }
+        if lowercased.contains("buy") || lowercased.contains("shop") || lowercased.contains("purchase") || lowercased.contains("get") {
+            return ("shopping-cart", "gray")
+        }
+        return ("paste", "gray")
     }
 }
 
